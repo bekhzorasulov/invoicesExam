@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .align-elements {
+    @apply max-w-4xl mx-auto px-5 w-full;
+  }
+}
+body {
+  font-family: "Spartan", sans-serif;
+}
+
+[data-theme="night"] {
+  .list-a {
+    background-color: #1e2139;
+    color: var(--color-light-bg);
+  }
+  .list-a:hover {
+    background-color: #1e2139;
+  }
+}

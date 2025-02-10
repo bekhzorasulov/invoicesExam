@@ -1,11 +1,26 @@
-import SideBar from "./pages/SideBar";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import MainLayout from "./layouts/MainLayout";
+import Home from "./pages/Home";
+import About from "./pages/About";
 
 function App() {
-  return (
-    <div>
-      <SideBar />
-    </div>
-  );
+  const routes = createBrowserRouter([
+    {
+      path: "/",
+      element: <MainLayout />,
+      children: [
+        {
+          index: true,
+          element: <Home />,
+        },
+        {
+          path: "/about",
+          element: <About />,
+        },
+      ],
+    },
+  ]);
+  return <RouterProvider router={routes} />;
 }
 
 export default App;
