@@ -1,26 +1,12 @@
-import { useEffect, useState } from "react";
-
-const themeFromLocalStorage = () => {
-  return localStorage.getItem("theme") || "light";
-};
+import { useTheme } from "../hooks/useTheme";
 
 function SidebBar() {
-  const [theme, setTheme] = useState(themeFromLocalStorage);
-
-  const toggleTheme = () => {
-    const newTheme = theme == "light" ? "night" : "light";
-    setTheme(newTheme);
-  };
-
-  useEffect(() => {
-    localStorage.setItem("theme", theme);
-    document.documentElement.setAttribute("data-theme", theme), [theme];
-  });
+  const { toggleTheme } = useTheme();
 
   return (
     <div className="md: w-[103px] bg-primary-dark rounded-r-3xl flex flex-col justify-between">
       <div>
-        <img src="./logo.png" alt="" />
+        <img src="../logo.png" alt="logo" />
       </div>
       <div className="flex flex-col items-center pb-6">
         {/* <IoMoonOutline className="w-[20px] h-[20px] text-slate-100" /> */}
@@ -52,7 +38,7 @@ function SidebBar() {
           </svg>
         </label>
         <span className="border-solid bg-gray-500 w-full h-[1px] mt-8"></span>
-        <img className="mt-6" src="./Oval.png" alt="" />
+        <img className="mt-6" src="../Oval.png" alt="" />
       </div>
     </div>
   );

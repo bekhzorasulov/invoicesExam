@@ -4,7 +4,7 @@
 
 @layer components {
   .align-elements {
-    @apply max-w-4xl mx-auto px-5 w-full;
+    @apply max-w-[770px] mx-auto px-5 py-2 w-full;
   }
 }
 body {
@@ -18,5 +18,8 @@ body {
   }
   .list-a:hover {
     background-color: #1e2139;
+  }
+  .footer-a {
+    background-color: #0c0e16;
   }
 }
