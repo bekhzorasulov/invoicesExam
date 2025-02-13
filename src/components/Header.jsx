@@ -1,13 +1,45 @@
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { FaPlus } from "react-icons/fa6";
+import { useFetch } from "../hooks/useFetch";
+import ButtonSideBar from "./ButtonSideBar";
+import { useEffect, useState } from "react";
 
-function Header() {
+function Header({ setFilteredData }) {
+  const { data } = useFetch();
+  const [selectedStatus, setSelectedStatus] = useState([]);
+
+  const filtered =
+    selectedStatus.length > 0
+      ? data.filter((b) => selectedStatus.includes(b.status))
+      : data;
+
+  useEffect(() => {
+    if (!data) return;
+    setFilteredData(filtered);
+  }, [selectedStatus, data, setFilteredData]);
+
+  if (!data)
+    return (
+      <p className="m-auto flex items-center gap-2">
+        Loading<span className="loading loading-dots loading-md"></span>
+      </p>
+    );
+
+  const uniqueStatus = [...new Set(data.map((item) => item.status))];
+
+  const handleFilterChange = (status) => {
+    setSelectedStatus((prev) =>
+      prev.includes(status)
+        ? prev.filter((s) => s !== status)
+        : [...prev, status]
+    );
+  };
+
   return (
-    <div className="align-elements flex justify-between items-center mt-16 p-4 rounded-lg shadow-md">
+    <div className="align-elements flex justify-between items-center mt-16 rounded-lg shadow-md">
       <div>
         <h1 className="font-spartan font-bold text-3xl">Invoices</h1>
         <p className="font-spartan font-normal text-[#888EB0] ">
-          There are <span>7</span> total invoices
+          {data ? `There are ${filtered.length} total invoices` : "No Invoices"}
         </p>
       </div>
       <div className="flex items-center gap-10">
@@ -20,22 +52,41 @@ function Header() {
             tabIndex={0}
             className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
           >
-            <li>
-              <a>Item 1</a>
+            {uniqueStatus.map((status, index) => (
+              <li key={index}>
+                <label>
+                  <span className="flex items-center gap-3 capitalize">
+                    <input
+                      type="checkbox"
+                      className="checkbox"
+                      onChange={() => handleFilterChange(status)}
+                      checked={selectedStatus.includes(status)}
+                    />
+                    {status}
+                  </span>
+                </label>
+              </li>
+            ))}
+            {/* <li>
+              <label>
+                <span className="flex items-center gap-3">
+                  <input type="checkbox" className="checkbox" />
+                  Pending
+                </span>
+              </label>
             </li>
             <li>
-              <a>Item 2</a>
-            </li>
-            <li>
-              <a>Item 2</a>
-            </li>
+              <label>
+                <span className="flex items-center gap-3">
+                  <input type="checkbox" className="checkbox" />
+                  Paid
+                </span>
+              </label>
+            </li> */}
           </ul>
         </div>
         <div>
-          <button className="btn bg-primary-light text-white font-spartanBold text-sm rounded-3xl">
-            <FaPlus className="" />
-            New Invoice
-          </button>
+          <ButtonSideBar />
         </div>
       </div>
     </div>
