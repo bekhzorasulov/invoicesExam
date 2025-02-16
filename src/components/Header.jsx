@@ -1,11 +1,24 @@
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { useFetch } from "../hooks/useFetch";
 import ButtonSideBar from "./ButtonSideBar";
 import { useEffect, useState } from "react";
+import { getAllData } from "../request/dataRequest";
 
 function Header({ setFilteredData }) {
-  const { data } = useFetch();
   const [selectedStatus, setSelectedStatus] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    setLoading(true);
+    getAllData()
+      .then((res) => {
+        setData(res);
+      })
+      .catch(() => {})
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
 
   const filtered =
     selectedStatus.length > 0
@@ -17,14 +30,14 @@ function Header({ setFilteredData }) {
     setFilteredData(filtered);
   }, [selectedStatus, data, setFilteredData]);
 
-  if (!data)
+  if (loading)
     return (
       <p className="m-auto flex items-center gap-2">
         Loading<span className="loading loading-dots loading-md"></span>
       </p>
     );
 
-  const uniqueStatus = [...new Set(data.map((item) => item.status))];
+  const uniqueStatus = [...new Set(data?.map((item) => item.status))];
 
   const handleFilterChange = (status) => {
     setSelectedStatus((prev) =>
@@ -52,7 +65,7 @@ function Header({ setFilteredData }) {
             tabIndex={0}
             className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
           >
-            {uniqueStatus.map((status, index) => (
+            {uniqueStatus?.map((status, index) => (
               <li key={index}>
                 <label>
                   <span className="flex items-center gap-3 capitalize">
@@ -67,22 +80,6 @@ function Header({ setFilteredData }) {
                 </label>
               </li>
             ))}
-            {/* <li>
-              <label>
-                <span className="flex items-center gap-3">
-                  <input type="checkbox" className="checkbox" />
-                  Pending
-                </span>
-              </label>
-            </li>
-            <li>
-              <label>
-                <span className="flex items-center gap-3">
-                  <input type="checkbox" className="checkbox" />
-                  Paid
-                </span>
-              </label>
-            </li> */}
           </ul>
         </div>
         <div>
