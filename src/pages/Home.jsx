@@ -1,12 +1,32 @@
 import Header from "../components/Header";
 import InvoiceItem from "../components/InvoiceItem";
 import ErrorPage from "../components/ErrorPage";
-import { useFetch } from "../hooks/useFetch";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getAllData } from "../request/dataRequest";
 
 function Home() {
-  const { data } = useFetch();
   const [filteredData, setFilteredData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    setLoading(true);
+    getAllData()
+      .then((res) => {
+        setData(res);
+      })
+      .catch(() => {})
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading)
+    return (
+      <p className="m-auto flex items-center gap-2">
+        Loading<span className="loading loading-dots loading-md"></span>
+      </p>
+    );
 
   return (
     <div className="align-elements my-auto h-screen">

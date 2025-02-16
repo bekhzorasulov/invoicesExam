@@ -1,30 +1,21 @@
 import FormInput from "./FormInput";
-import { IoAddOutline } from "react-icons/io5";
 import { MdOutlineDelete } from "react-icons/md";
-import { objectCreater } from "../utils/objectCreate";
-import { useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { getOneData } from "../request/dataRequest";
 
-function ButtonSideBar() {
+function EditDrawer() {
+  const { id } = useParams();
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState(null);
+  const [items, setItems] = useState([]);
   const drawerRef = useRef(null);
   const formRef = useRef(null);
-  const [items, setItems] = useState([]);
 
   const handleReload = () => {
     window.location.reload();
   };
 
-  // discard button
-  const handleDiscard = () => {
-    if (drawerRef.current) {
-      drawerRef.current.checked = false;
-    }
-    if (formRef.current) {
-      formRef.current.reset();
-    }
-    setItems([]);
-  };
-
-  // add new item button
   const addNewItem = () => {
     setItems([...items, { id: Date.now(), name: "", qty: 1, price: 0.0 }]);
   };
@@ -40,60 +31,78 @@ function ButtonSideBar() {
     );
   };
 
-  async function getFormData(e) {
+  const updateInvoice = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
+    const updatedData = {
+      clientName: e.target.clientName.value,
+      clientEmail: e.target.clientEmail.value,
+      senderAddress: {
+        street: e.target.senderStreet.value,
+        city: e.target.senderCity.value,
+        postCode: e.target.senderPostCode.value,
+        country: e.target.senderCountry.value,
+      },
+      clientAddress: {
+        street: e.target.streetAddressClient.value,
+        city: e.target.city.value,
+        postCode: e.target.postCode.value,
+        country: e.target.country.value,
+      },
+      createdAt: e.target.invoiceDate.value,
+      paymentTerms: e.target.paymentTerms.value,
+      description: e.target.projectDescription.value,
 
-    const itemNames = formData.getAll("itemName");
-    const quantities = formData.getAll("qty");
-    const prices = formData.getAll("price");
-
-    const items = itemNames.map((name, index) => ({
-      name,
-      quantity: Number(quantities[index]),
-      price: Number(prices[index]),
-      total: Number(prices[index]) * Number(quantities[index]),
-    }));
-    const submitter = e.nativeEvent.submitter;
-    const status = submitter.dataset.status;
-
-    const invoiceData = objectCreater({
-      createdAt: new Date().toISOString().split("T")[0],
-      paymentDue: data.invoiceDate,
-      description: data.projectDescription,
-      paymentTerms: data.paymentTerms,
-      clientName: data.clientName,
-      clientEmail: data.clientEmail,
-      status,
-      senderStreet: data.senderStreet,
-      senderCity: data.senderCity,
-      senderPostCode: data.senderPostCode,
-      senderCountry: data.senderCountry,
-      street: data.streetAddress,
-      city: data.city,
-      postCode: data.postCode,
-      country: data.country,
       items,
-    });
+    };
 
     try {
-      const response = await fetch("http://localhost:3000/data", {
-        method: "POST",
+      const response = await fetch(`http://localhost:3000/data/${id}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(invoiceData),
+        body: JSON.stringify(updatedData),
       });
 
       if (!response.ok) {
-        throw new Error("Serverga ma'lumot yuborishda xatolik!");
+        throw new Error("Ma'lumotni yangilashda xatolik!");
       }
       handleReload();
     } catch (error) {
-      console.error("Xatolik:", error);
+      console.error(error);
+      alert("Xatolik yuz berdi!");
     }
-  }
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    getOneData(id)
+      .then((res) => {
+        setData(res);
+        setItems(res.items);
+      })
+      .catch(() => {})
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [id]);
+
+  if (loading)
+    return (
+      <p className="m-auto flex items-center gap-2">
+        Loading<span className="loading loading-dots loading-md"></span>
+      </p>
+    );
+
+  const handleDiscard = () => {
+    if (drawerRef.current) {
+      drawerRef.current.checked = false;
+    }
+    if (formRef.current) {
+      formRef.current.reset();
+    }
+    setItems([]);
+  };
 
   return (
     <div className="drawer">
@@ -106,18 +115,17 @@ function ButtonSideBar() {
       <div className="drawer-content">
         <label
           htmlFor="my-drawer"
-          className="btn bg-[#7C5DFA] hover:bg-[#6349ca] text-white w-40 rounded-full flex justify-between pl-2 pr-6 drawer-button"
+          className="btn text-white rounded-full flex justify-between pl-2 pr-6 drawer-button"
         >
-          <span className="rounded-full w-6 h-6 bg-white">
-            <IoAddOutline className="w-full h-full text-[#7C5DFA] font-bold" />
+          <span className="btn menu rounded-3xl font-spartan font-bold text-xs text-secodary-dark ">
+            Edit
           </span>
-          <p> New Invoice</p>
         </label>
       </div>
 
       <form
+        onSubmit={updateInvoice}
         ref={formRef}
-        onSubmit={getFormData}
         className="drawer-side ml-[95px]"
       >
         <label
@@ -130,29 +138,29 @@ function ButtonSideBar() {
             <h1 className="text-2xl font-bold mb-6">New Invoice</h1>
             <h2 className="text-purple-600 font-semibold mb-2">Bill From</h2>
             <FormInput
-              name="streetAddress"
+              name="senderStreet"
               type="text"
-              placaholder="19 Union Terrace"
               mainName="Street Address"
+              defaultValue={data?.senderAddress.street}
             />
 
             <div className="grid grid-cols-3 gap-4 mt-4">
               <FormInput
                 name="senderCity"
                 type="text"
-                placaholder="London"
+                defaultValue={data?.senderAddress.city}
                 mainName="City"
               />
               <FormInput
                 name="senderPostCode"
                 type="text"
-                placaholder="E1 3EZ"
+                defaultValue={data?.senderAddress.postCode}
                 mainName="Post Code"
               />
               <FormInput
                 name="senderCountry"
                 type="text"
-                placaholder="United Kingdom"
+                defaultValue={data?.senderAddress.country}
                 mainName="Country"
               />
             </div>
@@ -161,19 +169,19 @@ function ButtonSideBar() {
             <FormInput
               name="clientName"
               type="text"
-              placaholder="Alex Grim"
+              defaultValue={data?.clientName}
               mainName="Client’s Name"
             />
             <FormInput
               name="clientEmail"
               type="email"
-              placaholder="alexgrim@mail.com"
+              defaultValue={data?.clientEmail}
               mainName="Client’s Email"
             />
             <FormInput
-              name="streetAddress"
+              name="streetAddressClient"
               type="text"
-              placaholder="84 Church Way"
+              defaultValue={data?.clientAddress.street}
               mainName="Street Address"
             />
 
@@ -181,19 +189,19 @@ function ButtonSideBar() {
               <FormInput
                 name="city"
                 type="text"
-                placaholder="Bradford"
+                defaultValue={data?.clientAddress.city}
                 mainName="City"
               />
               <FormInput
                 name="postCode"
                 type="text"
-                placaholder="BD1 9PB"
+                defaultValue={data?.clientAddress.postCode}
                 mainName="Post Code"
               />
               <FormInput
                 name="country"
                 type="text"
-                placaholder="United Kingdom"
+                defaultValue={data?.clientAddress.country}
                 mainName="Country"
               />
             </div>
@@ -214,10 +222,11 @@ function ButtonSideBar() {
             <FormInput
               name="projectDescription"
               type="text"
-              placaholder="Graphic Design"
+              defaultValue={data?.description}
               mainName="Project Description"
             />
             <h2 className="text-gray-600 font-semibold mt-6 mb-2">Item List</h2>
+
             <div className="flex items-center gap-12">
               <p>Item Name</p>
               <p className="ml-[90px]">Qty</p>
@@ -231,7 +240,7 @@ function ButtonSideBar() {
             ) : (
               items.map((item) => (
                 <div key={item.id} className="flex items-center py-2 gap-4">
-                  <input
+                  <FormInput
                     name="itemName"
                     type="text"
                     placeholder="Banner Design"
@@ -242,7 +251,7 @@ function ButtonSideBar() {
                       updateItem(item.id, "name", e.target.value)
                     }
                   />
-                  <input
+                  <FormInput
                     value={item.qty}
                     onChange={(e) =>
                       updateItem(item.id, "qty", Number(e.target.value))
@@ -254,7 +263,7 @@ function ButtonSideBar() {
                     min="1"
                     // mainName="Qty."
                   />
-                  <input
+                  <FormInput
                     value={item.price}
                     onChange={(e) =>
                       updateItem(item.id, "price", Number(e.target.value))
@@ -289,28 +298,21 @@ function ButtonSideBar() {
               + Add New Item
             </button>
 
-            <div className="flex justify-between mt-6">
-              <button
-                onClick={handleDiscard}
-                type="button"
-                className={`btn py-2 px-6 rounded-lg text-secodary-dark`}
-              >
-                Discard
-              </button>
+            <div className="flex justify-end mt-6">
               <div className="flex gap-2">
                 <button
-                  className="btn bg-primary-dark text-white py-2 px-6 rounded-lg hover:bg-primary-darker"
-                  type="submit"
-                  data-status="draft"
+                  onClick={handleDiscard}
+                  type="button"
+                  className={`btn py-2 px-6 rounded-lg text-secodary-dark`}
                 >
-                  Save as Draft
+                  Cancel
                 </button>
                 <button
                   className="btn bg-secondary-dark text-white py-2 px-6 rounded-lg hover:bg-secondary"
                   type="submit"
                   data-status="pending"
                 >
-                  Save & Send
+                  Save Changes
                 </button>
               </div>
             </div>
@@ -321,4 +323,4 @@ function ButtonSideBar() {
   );
 }
 
-export default ButtonSideBar;
+export default EditDrawer;

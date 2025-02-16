@@ -22,4 +22,12 @@ body {
   .footer-a {
     background-color: #0c0e16;
   }
+  input {
+    background-color: #1e2139;
+  }
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
