@@ -24,9 +24,26 @@ function InvoiceItem({ filteredData }) {
                 {info.clientName}
               </span>
             </div>
-            <span className="font-bold text-base text-right">
-              ${info.total}
-            </span>
+            {info.total
+              ? `£${info.total}`
+              : `${info.items.map((item, index) => {
+                  return (
+                    <span
+                      key={index}
+                      className="font-bold text-base text-right"
+                    >
+                      £{Number(item.price * item.quantity)}
+                    </span>
+                  );
+                })}`}
+            {/* {info.items.map((item, index) => {
+              return (
+                <span key={index} className="font-bold text-base text-right">
+                  £{item.price * item.quantity}
+                </span>
+              );
+            })} */}
+            {/* <span className="">${info.total}</span> */}
             <StatusStyle status={info.status} />
             <FaAngleRight />
           </Link>

@@ -1,7 +1,7 @@
 function DeleteAlertModal({ isOpen, onClose, onConfirm, invoiceId }) {
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 flex items-center justify-center  backdrop-blur-xs">
+    <div className="fixed inset-0 flex items-center justify-center  backdrop-blur-sm">
       <div className="list-a rounded-lg p-6 w-[400px] shadow-lg">
         <h3 className="text-xl font-bold ">Confirm Deletion</h3>
         <p className=" mt-2">

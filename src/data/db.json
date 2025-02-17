@@ -2,10 +2,10 @@
   "data": [
     {
       "id": "RT3080",
-      "createdAt": "2025-02-14",
+      "createdAt": "",
       "paymentDue": "2021-08-19",
-      "description": "Re-branding  hellooo",
-      "paymentTerms": "2025-02-26",
+      "description": "Re-branding",
+      "paymentTerms": "",
       "clientName": "Jensen Huang",
       "clientEmail": "jensenh@mail.com",
       "status": "paid",
@@ -24,9 +24,15 @@
       "items": [
         {
           "name": "Brand Guidelines",
-          "quantity": 1,
-          "price": 1800.9,
+          "quantity": 2,
+          "price": 1800,
           "total": 1800.9
+        },
+        {
+          "id": 1739709602550,
+          "name": "name",
+          "quantity": 12,
+          "price": 10
         }
       ],
       "total": 1800.9
@@ -39,7 +45,7 @@
       "paymentTerms": 30,
       "clientName": "Alex Grim",
       "clientEmail": "alexgrim@mail.com",
-      "status": "pending",
+      "status": "paid",
       "senderAddress": {
         "street": "19 Union Terrace",
         "city": "London",
@@ -70,10 +76,10 @@
     },
     {
       "id": "RG0314",
-      "createdAt": "2021-09-24",
+      "createdAt": "",
       "paymentDue": "2021-10-01",
       "description": "Website Redesign",
-      "paymentTerms": 7,
+      "paymentTerms": "",
       "clientName": "John Morrison",
       "clientEmail": "jm@myco.com",
       "status": "paid",
@@ -93,7 +99,7 @@
         {
           "name": "Website Redesign",
           "quantity": 1,
-          "price": 14002.33,
+          "price": 1400,
           "total": 14002.33
         }
       ],
@@ -101,10 +107,10 @@
     },
     {
       "id": "RT2080",
-      "createdAt": "2021-10-11",
+      "createdAt": "",
       "paymentDue": "2021-10-12",
       "description": "Logo Concept",
-      "paymentTerms": 1,
+      "paymentTerms": "",
       "clientName": "Alysa Werner",
       "clientEmail": "alysa@email.co.uk",
       "status": "pending",
@@ -124,7 +130,7 @@
         {
           "name": "Logo Sketches",
           "quantity": 1,
-          "price": 102.04,
+          "price": 102,
           "total": 102.04
         }
       ],
@@ -132,10 +138,10 @@
     },
     {
       "id": "AA1449",
-      "createdAt": "2021-10-7",
+      "createdAt": "",
       "paymentDue": "2021-10-14",
       "description": "Re-branding",
-      "paymentTerms": 7,
+      "paymentTerms": "",
       "clientName": "Mellisa Clarke",
       "clientEmail": "mellisa.clarke@example.com",
       "status": "pending",
@@ -153,26 +159,20 @@
       },
       "items": [
         {
+          "id": 1739710704351,
           "name": "New Logo",
           "quantity": 1,
-          "price": 1532.33,
-          "total": 1532.33
-        },
-        {
-          "name": "Brand Guidelines",
-          "quantity": 1,
-          "price": 2500,
-          "total": 2500
+          "price": 1532
         }
       ],
       "total": 4032.33
     },
     {
       "id": "TY9141",
-      "createdAt": "2021-10-01",
+      "createdAt": "",
       "paymentDue": "2021-10-31",
       "description": "Landing Page Design",
-      "paymentTerms": 30,
+      "paymentTerms": "",
       "clientName": "Thomas Wayne",
       "clientEmail": "thomas@dc.com",
       "status": "pending",
@@ -192,7 +192,7 @@
         {
           "name": "Web Design",
           "quantity": 1,
-          "price": 6155.91,
+          "price": 6155,
           "total": 6155.91
         }
       ],
@@ -200,12 +200,12 @@
     },
     {
       "id": "FV2353",
-      "createdAt": "2021-11-05",
+      "createdAt": "",
       "paymentDue": "2021-11-12",
       "description": "Logo Re-design",
-      "paymentTerms": 7,
+      "paymentTerms": "",
       "clientName": "Anita Wainwright",
-      "clientEmail": "",
+      "clientEmail": "bekhzodr2001@gmail.com",
       "status": "draft",
       "senderAddress": {
         "street": "19 Union Terrace",
@@ -214,31 +214,32 @@
         "country": "United Kingdom"
       },
       "clientAddress": {
-        "street": "",
-        "city": "",
-        "postCode": "",
-        "country": ""
+        "street": "Ferghana street 49/2",
+        "city": "Ferghana",
+        "postCode": "150100",
+        "country": "Uzbekistan"
       },
       "items": [
         {
-          "name": "Logo Re-design",
-          "quantity": 1,
-          "price": 3102.04,
-          "total": 3102.04
+          "id": 1739708680042,
+          "name": "Football",
+          "quantity": 130,
+          "price": 2
         }
       ],
       "total": 3102.04
     },
     {
       "id": "e8fe",
-      "createdAt": "2025-02-15",
+      "createdAt": "",
       "paymentDue": "2025-02-15",
       "description": "Re-branding Heloo",
-      "paymentTerms": null,
+      "paymentTerms": "",
       "clientName": "bekhzod Rasulov",
       "clientEmail": "bekhzodr2001@gmail.com",
       "status": "pending",
       "senderAddress": {
+        "street": "",
         "city": "Ferghana",
         "postCode": "150100",
         "country": "Uzbekistan"
@@ -251,13 +252,51 @@
       },
       "items": [
         {
-          "name": "Hello",
-          "quantity": 6,
-          "price": 2,
-          "total": 12
+          "id": 1739707572323,
+          "name": "Hellooooo",
+          "quantity": 12,
+          "price": 12,
+          "total": "0"
+        },
+        {
+          "id": 1739715828168,
+          "name": "name",
+          "quantity": 100,
+          "price": 1
         }
       ],
       "total": 12
+    },
+    {
+      "id": "b589",
+      "createdAt": "",
+      "paymentDue": "2025-02-17",
+      "description": "Re-branding",
+      "paymentTerms": "",
+      "clientName": "bekhzod",
+      "clientEmail": "bekhzodr2001@gmail.com",
+      "status": "paid",
+      "senderAddress": {
+        "street": "",
+        "city": "Ferghana",
+        "postCode": "150100",
+        "country": "Uzbekistan"
+      },
+      "clientAddress": {
+        "street": "Ferghana street 49/2",
+        "city": "Ferghana",
+        "postCode": "150100",
+        "country": "Uzbekistan"
+      },
+      "items": [
+        {
+          "id": 1739707985894,
+          "name": "date",
+          "quantity": 15,
+          "price": 20
+        }
+      ],
+      "total": 2.2
     }
   ]
 }

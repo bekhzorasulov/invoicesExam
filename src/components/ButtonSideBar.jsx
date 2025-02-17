@@ -3,17 +3,19 @@ import { IoAddOutline } from "react-icons/io5";
 import { MdOutlineDelete } from "react-icons/md";
 import { objectCreater } from "../utils/objectCreate";
 import { useRef, useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function ButtonSideBar() {
   const drawerRef = useRef(null);
   const formRef = useRef(null);
   const [items, setItems] = useState([]);
+  const navigate = useNavigate();
 
   const handleReload = () => {
     window.location.reload();
   };
 
-  // discard button
   const handleDiscard = () => {
     if (drawerRef.current) {
       drawerRef.current.checked = false;
@@ -24,12 +26,19 @@ function ButtonSideBar() {
     setItems([]);
   };
 
-  // add new item button
   const addNewItem = () => {
-    setItems([...items, { id: Date.now(), name: "", qty: 1, price: 0.0 }]);
+    setItems([
+      ...items,
+      {
+        id: Date.now(),
+        name: "name",
+        quantity: Number(1),
+        price: Number(1),
+        // total: `${items.map((item)=>item.price * item.quan)}`
+      },
+    ]);
   };
 
-  // remove icon
   const removeItem = (id) => {
     setItems(items.filter((item) => item.id !== id));
   };
@@ -89,10 +98,14 @@ function ButtonSideBar() {
       if (!response.ok) {
         throw new Error("Serverga ma'lumot yuborishda xatolik!");
       }
+      drawerRef.current.checked = false;
       handleReload();
+      // navigate("/");
     } catch (error) {
       console.error("Xatolik:", error);
     }
+
+    toast.success("Invoice added successfully");
   }
 
   return (
@@ -220,9 +233,9 @@ function ButtonSideBar() {
             <h2 className="text-gray-600 font-semibold mt-6 mb-2">Item List</h2>
             <div className="flex items-center gap-12">
               <p>Item Name</p>
-              <p className="ml-[90px]">Qty</p>
-              <p>Price</p>
-              <p>Total</p>
+              <p className="ml-[140px]">Qty</p>
+              <p className="ml-[20px]">Price</p>
+              <p className="ml-[20px]">Total</p>
             </div>
             {items.length === 0 ? (
               <p className="text-gray-500 text-center mt-5">
@@ -230,12 +243,15 @@ function ButtonSideBar() {
               </p>
             ) : (
               items.map((item) => (
-                <div key={item.id} className="flex items-center py-2 gap-4">
+                <div
+                  key={item.id}
+                  className="flex items-center py-2 gap-10 w-full"
+                >
                   <input
                     name="itemName"
                     type="text"
                     placeholder="Banner Design"
-                    className="p-4 rounded-md w-[200px]"
+                    className="p-4 rounded-md w-[230px]"
                     // mainName="Item Name"
                     value={item.name}
                     onChange={(e) =>
@@ -243,11 +259,11 @@ function ButtonSideBar() {
                     }
                   />
                   <input
-                    value={item.qty}
+                    value={item.quantity}
                     onChange={(e) =>
-                      updateItem(item.id, "qty", Number(e.target.value))
+                      updateItem(item.id, "quantity", Number(e.target.value))
                     }
-                    name="qty"
+                    name="quantity"
                     type="number"
                     placeholder="1"
                     className="p-4 rounded-md w-[55px] text-center"
@@ -263,18 +279,18 @@ function ButtonSideBar() {
                     type="number"
                     placeholder="156.00"
                     className="p-4 rounded-md w-[55px] text-center"
-                    min="0.1"
+                    min="0"
                     // mainName="Price"
                   />
                   <div className="flex flex-col">
                     <div className="flex items-center justify-between">
                       <span className="border-solid border-1 rounded-sm px-4 py-2 flex justify-between items-center text-gray-400">
-                        {(item.qty * item.price).toFixed(2)}
+                        {Number(item.quantity * item.price).toFixed(2)}
                       </span>
 
                       <MdOutlineDelete
                         onClick={() => removeItem(item.id)}
-                        className="text-3xl"
+                        className="text-3xl cursor-pointer"
                       />
                     </div>
                   </div>

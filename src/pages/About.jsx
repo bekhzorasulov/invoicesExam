@@ -1,14 +1,14 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { FaAngleLeft } from "react-icons/fa";
-import AboutHeader from "../components/AboutHeader";
 import { useEffect, useState } from "react";
 import { getOneData } from "../request/dataRequest";
+import AboutHeader from "../components/AboutHeader";
 
 function About() {
-  const navigate = useNavigate();
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -108,7 +108,9 @@ function About() {
                         <td className="text-right text-purple-600">
                           £{item.price}
                         </td>
-                        <td className="text-right font-bold">£{item.total}</td>
+                        <td className="text-right font-bold">
+                          £{item.quantity * item.price}
+                        </td>
                       </tr>
                     );
                   })}
@@ -123,7 +125,13 @@ function About() {
           </div>
           <div className="bg-gray-900 footer-a text-white w-full rounded-lg p-8 flex justify-between items-center">
             <span className="text-lg">Amount Due</span>
-            <span className="text-3xl font-bold">£{data.total}</span>
+            {data.items.map((item, index) => {
+              return (
+                <span key={index} className="text-3xl font-bold">
+                  £{item.price * item.quantity}
+                </span>
+              );
+            })}
           </div>
         </div>
       </div>

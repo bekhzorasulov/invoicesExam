@@ -17,10 +17,18 @@ function EditDrawer() {
   };
 
   const addNewItem = () => {
-    setItems([...items, { id: Date.now(), name: "", qty: 1, price: 0.0 }]);
+    setItems([
+      ...items,
+      {
+        id: Date.now(),
+        name: "name",
+        quantity: 1,
+        price: 1,
+        //         total: `${Number(items.map((item) => item.price * item.quantity))}`,
+      },
+    ]);
   };
 
-  // remove icon
   const removeItem = (id) => {
     setItems(items.filter((item) => item.id !== id));
   };
@@ -51,7 +59,6 @@ function EditDrawer() {
       createdAt: e.target.invoiceDate.value,
       paymentTerms: e.target.paymentTerms.value,
       description: e.target.projectDescription.value,
-
       items,
     };
 
@@ -115,9 +122,9 @@ function EditDrawer() {
       <div className="drawer-content">
         <label
           htmlFor="my-drawer"
-          className="btn text-white rounded-full flex justify-between pl-2 pr-6 drawer-button"
+          className="rounded-full flex justify-between pl-2 pr-6 drawer-button"
         >
-          <span className="btn menu rounded-3xl font-spartan font-bold text-xs text-secodary-dark ">
+          <span className="btn menu rounded-3xl p-5 font-spartan font-bold text-xs text-secodary-dark ">
             Edit
           </span>
         </label>
@@ -229,9 +236,9 @@ function EditDrawer() {
 
             <div className="flex items-center gap-12">
               <p>Item Name</p>
-              <p className="ml-[90px]">Qty</p>
-              <p>Price</p>
-              <p>Total</p>
+              <p className="ml-[140px]">Qty</p>
+              <p className="ml-[20px]">Price</p>
+              <p className="ml-[20px]">Total</p>
             </div>
             {items.length === 0 ? (
               <p className="text-gray-500 text-center mt-5">
@@ -239,51 +246,54 @@ function EditDrawer() {
               </p>
             ) : (
               items.map((item) => (
-                <div key={item.id} className="flex items-center py-2 gap-4">
-                  <FormInput
-                    name="itemName"
-                    type="text"
-                    placeholder="Banner Design"
-                    className="p-4 rounded-md w-[200px]"
-                    // mainName="Item Name"
+                <div
+                  key={item.id}
+                  className="flex items-center py-2 gap-10 w-full"
+                >
+                  <input
                     value={item.name}
                     onChange={(e) =>
                       updateItem(item.id, "name", e.target.value)
                     }
+                    name="itemName"
+                    type="text"
+                    placeholder="Banner Design"
+                    className="p-4 rounded-md w-[230px]"
+                    //   mainName="Item Name"
                   />
-                  <FormInput
-                    value={item.qty}
+                  <input
+                    value={item.quantity}
                     onChange={(e) =>
-                      updateItem(item.id, "qty", Number(e.target.value))
+                      updateItem(item.id, "quantity", Number(e.target.value))
                     }
-                    name="qty"
+                    name="quantity"
                     type="number"
                     placeholder="1"
                     className="p-4 rounded-md w-[55px] text-center"
                     min="1"
-                    // mainName="Qty."
+                    //   mainName="Qty."
                   />
-                  <FormInput
+                  <input
                     value={item.price}
                     onChange={(e) =>
                       updateItem(item.id, "price", Number(e.target.value))
                     }
                     name="price"
                     type="number"
-                    placeholder="156.00"
+                    placeholder="156"
                     className="p-4 rounded-md w-[55px] text-center"
-                    min="0.1"
-                    // mainName="Price"
+                    min="0"
+                    //   mainName="Price"
                   />
                   <div className="flex flex-col">
                     <div className="flex items-center justify-between">
                       <span className="border-solid border-1 rounded-sm px-4 py-2 flex justify-between items-center text-gray-400">
-                        {(item.qty * item.price).toFixed(2)}
+                        {Number(item.quantity * item.price).toFixed(2)}
                       </span>
 
                       <MdOutlineDelete
                         onClick={() => removeItem(item.id)}
-                        className="text-3xl"
+                        className="text-3xl cursor-pointer"
                       />
                     </div>
                   </div>
